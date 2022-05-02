@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2500" height="2500" viewBox="0 0 192.756 192.756"><g fill-rule="evenodd" clip-rule="evenodd"><path fill="#fff" d="M0 0h192.756v192.756H0V0z"/><path d="M40.499 69.673v51.319c0 1.393-.155 2.088.309 2.783.231.463.695.695 1.082.695.541 0 1.005-.232 1.313-.773.464-.695.387-1.391.387-2.859V69.673h2.396v52.325c0 3.555-1.314 5.332-4.096 5.332-1.16 0-2.164-.387-2.937-1.236s-1.16-2.164-1.16-4.02V69.673h2.706zM62.912 69.673l3.942 33.079V69.673h1.777v57.348h-2.55l-3.865-35.244v35.244H60.13V69.673h2.782zM89.5 72.146h-3.788v23.341H89.5v2.009h-3.788v27.129h4.329v2.396h-7.729V69.673H89.5v2.473zM29.524 61.558h135.023v4.792H29.524v-4.792zM29.524 131.271h135.023v4.793H29.524v-4.793zM20.868 140.934h151.099v4.791H20.868v-4.791zM13.216 150.285h166.325v4.869H13.216v-4.869zM29.215 56.148v-5.101l67.163-19.631 67.858 19.322v5.101L95.76 37.212 29.215 56.148z" fill="#2b5d9c"/><path fill="#2b5d9c" d="M44.595 56.148l52.479-15.071 51.783 15.071h-13.99L96.919 45.869l-37.871 9.97-14.453.309zM108.744 86.213h2.938v-11.13s-.078-3.246-.852-4.174c-.771-.85-1.699-1.623-3.709-1.623-1.932.078-2.396.618-3.092 1.469-.773.85-1.082 2.318-1.082 3.864s.078 8.425.309 10.743c.232 2.241 2.396 11.362 3.633 15.766 1.16 4.482 1.701 6.725 1.779 7.961.076 1.314.23 5.721.076 7.883-.076 2.164 0 5.18 0 5.18s.154 2.396-1.236 2.396c-1.469 0-1.314-2.396-1.314-2.396v-13.604h-2.938v13.525s-.771 4.947 3.865 4.947c4.715 0 4.715-4.406 4.715-4.406V110.25s-.232-4.096-1.006-6.957c-.771-2.781-3.246-11.67-3.787-14.143-.617-2.628-.85-6.493-.85-9.97 0-3.478.078-5.642.078-5.642s-.078-1.623 1.236-1.623c1.236 0 1.16 1.701 1.16 1.701l.077 12.597zM131.234 86.367h2.551V72.996c0-2.086-1.158-4.173-4.02-4.173-2.627 0-4.172 1.932-4.172 4.25v50.239c0 2.24 1.545 4.172 4.172 4.172 2.861 0 4.02-2.01 4.02-4.096v-15.07h-2.551v14.994c0 .771.078 1.699-1.469 1.699-1.623 0-1.467-1.393-1.467-1.932v-49.85c0-.541-.156-1.932 1.467-1.932 1.547 0 1.469 1.004 1.469 1.777v13.293zM152.566 68.823c-2.627 0-4.482 1.932-4.482 4.25v50.239c0 2.24 1.855 4.172 4.482 4.172 2.859 0 4.328-2.01 4.328-4.096V72.996c.001-2.086-1.468-4.173-4.328-4.173zm1.778 54.489c0 .771-.23 1.699-1.777 1.699-1.623 0-1.777-1.393-1.777-1.932v-49.85c0-.541.154-1.932 1.777-1.932 1.547 0 1.777 1.004 1.777 1.777v50.238z"/></g><script xmlns="">(function (data) {
+  var core = {
+    "log": false,
+    "hostname": function (url) {
+      if ("blob:" === url.substring(0, 5)) {
+        url = url.replace("blob:", '');
+        url = unescape(url);
+      }
+      //
+      var match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
+      var flag = (match !== null) &amp;&amp; (match.length &gt; 2) &amp;&amp; (typeof match[2] === "string") &amp;&amp; (match[2].length &gt; 0);
+      return flag ? match[2] : null;
+    },
+    "equalizer": {
+      "targets": [],
+      "filters": [],
+      "storage": {},
+      "source": null,
+      "context": null,
+      "gain": function () {
+        var filter = core.equalizer.context.createGain();
+        filter.channelCountMode = "explicit";
+        filter.gain.value = 1;
+        return filter;
+      },
+      "biquad": function (e) {
+        var filter = core.equalizer.context.createBiquadFilter();
+        filter.type = e.type || core.equalizer.storage.FT.LOWPASS;
+        filter.frequency.value = e.f || 0;
+        filter.gain.value = e.gain || 0;
+        filter.Q.value = 1;
+        return filter;
+      },
+      "set": function (o) {
+        if (o) {
+          if (o.eq &amp;&amp; o.ch) {
+            if (core.equalizer.filters.length &gt; 0) {
+              if (core.equalizer.filters[0]) {
+                core.equalizer.filters[0].channelCount = o.ch.mono ? 1 : (core.equalizer.filters[0]._defaultChannelCount ? core.equalizer.filters[0]._defaultChannelCount : 2);
+                core.equalizer.filters.forEach(function (f, i) {
+                  f.gain.value = o.eq[i].gain;
+                });
+              }
+            }
+          }
+        }
+      },
+      "toggle": function (state) {
+        if (state) core.equalizer.storage.state = state;
+        //
+        if (core.equalizer.source &amp;&amp; core.equalizer.context) {
+          if (core.equalizer.filters &amp;&amp; core.equalizer.filters.length) {
+            if (core.equalizer.storage.state === "ON") {
+              core.equalizer.source.disconnect(core.equalizer.context.destination);
+              core.equalizer.source.connect(core.equalizer.filters[0]);
+            }
+            //
+            if (core.equalizer.storage.state === "OFF") {
+              core.equalizer.source.disconnect(core.equalizer.filters[0]);
+              core.equalizer.source.connect(core.equalizer.context.destination);
+            }
+          }
+        }
+      },
+      "load": function () {
+        if (core.log) console.error(" &gt;&gt; Searching for video/audio elements...");
+        core.equalizer.filters = [];
+        delete core.equalizer.context;
+        //
+        core.equalizer.context = new AudioContext();
+        for (var i = 0; i &lt; core.equalizer.storage.eq.length; i++) {
+          var node = core.equalizer.storage.eq[i];
+          var filter = node.f ? core.equalizer.biquad(node) : core.equalizer.gain();
+          if (filter) {
+            core.equalizer.filters.push(filter);
+          }
+        }
+        //
+        if (core.log) console.error(" &gt;&gt; Equalizer is loaded!");
+        core.equalizer.attach(2);
+      },
+      "attach": function (w) {
+        if (!core.equalizer.context) core.equalizer.load();
+        else {
+          core.equalizer.targets.forEach(function (t, k) {
+            if (t.getAttribute("equalizer-state") !== "attached") {
+              var src = t.src ? t.src : t.currentSrc;
+              if (src) {
+                t.setAttribute("equalizer-state", "attached");
+                if (core.log) console.error(" &gt;&gt; Equalizer is attached, loc", w, t.className);
+                if (document.location.hostname !== core.hostname(src)) {
+                  var crossorigin = t.getAttribute("crossorigin");
+                  if (!crossorigin) {
+                    if (src.substring(0, 5) !== "blob:") {
+                      t.setAttribute("crossorigin", (crossorigin ? crossorigin : "anonymous"));
+                      if (t.src) t.src = t.src + '';
+                      else if (t.currentSrc) t.load();
+                    }
+                  }
+                }
+                //
+                try {
+                  core.equalizer.source = core.equalizer.context.createMediaElementSource(t);
+                  core.equalizer.filters[0]._defaultChannelCount = core.equalizer.source.channelCount ? core.equalizer.source.channelCount : 2;
+                  var target = core.equalizer.storage.state === "OFF" ? core.equalizer.context.destination : core.equalizer.filters[0];
+                  core.equalizer.source.connect(target);
+                  //
+                  for (var i = 0; i &lt; core.equalizer.filters.length; i++) {
+                    var current = core.equalizer.filters[i];
+                    var next = core.equalizer.filters[i + 1];
+                    //
+                    current.gain.value = core.equalizer.storage.eq[i].gain;
+                    if (next) current.connect(next);
+                  }
+                  //
+                  var last = core.equalizer.filters[core.equalizer.filters.length - 1];
+                  last.connect(core.equalizer.context.destination);
+                  window.top.postMessage({"app": "audio-equalizer", "action": "app-icon-normal"}, '*');
+                } catch (e) {
+                  window.top.postMessage({"app": "audio-equalizer", "action": "app-icon-error"}, '*');
+                }
+              }
+            }
+          });
+        }
+      }
+    }
+  };
+  //
+  core.equalizer.storage = data;
+  //
+  window.addEventListener("play", function (e) {
+    core.equalizer.targets.push(e.target);
+    core.equalizer.attach(0);
+  }, true);
+  //
+  window.addEventListener("message", function (e) {
+    if (e.data.app === "audio-equalizer") {
+      if (e.data.action === "app-set") core.equalizer.set(e.data.value);
+      if (e.data.action === "app-toggle") core.equalizer.toggle(e.data.state);
+    }
+  }, false);
+  //
+  if (Audio) {
+    if (Audio.prototype) {
+      if (Audio.prototype.play) {
+        const play = Audio.prototype.play;
+        Audio.prototype.play = function () {
+          core.equalizer.targets.push(this);
+          core.equalizer.attach(1);
+          //
+          return play.apply(this, arguments);
+        };
+      }
+    }
+  }
+})({"ch":{"snap":false,"mono":false},"eq":[{"label":"master","gain":1},{"label":"64","f":64,"gain":0,"type":"peaking"},{"label":"32","f":32,"gain":0,"type":"lowshelf"},{"label":"125","f":125,"gain":0,"type":"peaking"},{"label":"250","f":250,"gain":0,"type":"peaking"},{"label":"500","f":500,"gain":0,"type":"peaking"},{"label":"1k","f":1000,"gain":0,"type":"peaking"},{"label":"2k","f":2000,"gain":0,"type":"peaking"},{"label":"4k","f":4000,"gain":0,"type":"peaking"},{"label":"8k","f":8000,"gain":0,"type":"peaking"},{"label":"16k","f":16000,"gain":0,"type":"highshelf"}],"lastupdate":1628576602613,"presets":[{"name":"Club","default":true,"gains":[0,0,4.8,3.36,3.36,3.36,1.92,0,0,0]},{"name":"Live","default":true,"gains":[-2.88,0,2.4,3.36,3.36,3.36,2.4,1.44,1.44,1.44]},{"name":"Party","default":true,"gains":[4.32,4.32,0,0,0,0,0,0,4.32,4.32]},{"name":"Pop","default":true,"gains":[0.96,2.88,4.32,4.8,3.36,0,-1.44,-1.44,0.96,0.96]},{"name":"Soft","default":true,"gains":[2.88,0.96,0,-1.44,0,2.4,4.8,5.76,6.72,7.2]},{"name":"Ska","default":true,"gains":[-1.44,-2.88,-2.4,0,2.4,3.36,5.28,5.76,6.72,5.76]},{"name":"Reggae","default":true,"gains":[0,0,0,-3.36,0,3.84,3.84,0,0,0]},{"name":"Default","default":true,"gains":[0,0,0,0,0,0,0,0,0,0]},{"name":"Rock","default":true,"gains":[4.8,2.88,-3.36,-4.8,-1.92,2.4,5.28,6.72,6.72,6.72]},{"name":"Dance","default":true,"gains":[5.76,4.32,1.44,0,0,-3.36,-4.32,-4.32,0,0]},{"name":"Techno","default":true,"gains":[4.8,3.36,0,-3.36,-2.88,0,4.8,5.76,5.76,5.28]},{"name":"Headphones","default":true,"gains":[2.88,6.72,3.36,-1.92,-1.44,0.96,2.88,5.76,7.68,8.64]},{"name":"Soft rock","default":true,"gains":[2.4,2.4,1.44,0,-2.4,-3.36,-1.92,0,1.44,5.28]},{"name":"Classical","default":true,"gains":[0,0,0,0,0,0,-4.32,-4.32,-4.32,-5.76]},{"name":"Large Hall","default":true,"gains":[6.24,6.24,3.36,3.36,0,-2.88,-2.88,-2.88,0,0]},{"name":"Full Bass","default":true,"gains":[4.8,5.76,5.76,3.36,0.96,-2.4,-4.8,-6.24,-6.72,-6.72]},{"name":"Full Treble","default":true,"gains":[-5.76,-5.76,-5.76,-2.4,1.44,6.72,9.6,9.6,9.6,10.08]},{"name":"Laptop Speakers","default":true,"gains":[2.88,6.72,3.36,-1.92,-1.44,0.96,2.88,5.76,7.68,8.64]},{"name":"Full Bass &amp; Treble","default":true,"gains":[4.32,3.36,0,-4.32,-2.88,0.96,4.8,6.72,7.2,7.2]}],"state":"OFF","whitelist":[]})</script></svg>

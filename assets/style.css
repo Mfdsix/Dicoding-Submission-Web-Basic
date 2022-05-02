@@ -1,0 +1,263 @@
+:root {
+    --primary-color: #2B5D9C;
+    --white: white;
+    --grey: #fafbfc;
+    --black: #333333;
+}
+
+html,
+body {
+    margin: 0;
+}
+
+body {
+    background: var(--grey);
+    color: var(--black);
+    font-family: 'Lato', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+p {
+    margin: 25px 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+h2 {
+    color: var(--primary-color);
+    text-transform: uppercase;
+}
+
+h3 {
+    margin-top: 0;
+}
+
+img {
+    max-width: 100%;
+    opacity: 0.8;
+}
+
+img:hover {
+    opacity: 1;
+}
+
+figure,
+blockquote {
+    margin: 0;
+}
+
+section {
+    margin: 25px 0;
+}
+
+figure {
+    background: var(--white);
+    color: var(--primary-color);
+    border-left: 5px solid var(--primary-color);
+}
+
+figure figcaption {
+    font-style: italic;
+    font-size: 14px;
+    text-align: right;
+    background: var(--primary-color);
+    color: var(--white);
+    padding: 3px;
+}
+
+blockquote {
+    position: relative;
+    padding: 20px;
+    font-size: 14px;
+}
+
+blockquote::before {
+    position: absolute;
+    left: 0;
+    top: -20px;
+    content: "“";
+    color: var(--primary-color);
+    font-size: 64px;
+    font-weight: bold;
+}
+
+header .jumbotron {
+    background-color: var(--primary-color);
+    color: var(--white);
+    font-size: 20px;
+    padding: 60px;
+    text-align: center;
+}
+
+header nav {
+    background-color: var(--white);
+    padding: 5px 25px;
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+header nav .logo img {
+    height: 80px;
+}
+
+nav li {
+    display: inline;
+    list-style-type: none;
+    margin-right: 20px;
+}
+
+nav li a {
+    color: var(--primary-color);
+    font-size: 18px;
+    text-decoration: none;
+}
+
+main {
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+main #content {
+    width: 70%;
+}
+
+main aside {
+    width: 28%;
+}
+
+main article {
+    margin-bottom: 50px;
+}
+
+.card {
+    margin-bottom: 20px;
+    position: relative;
+    display: flex;
+}
+
+.card img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.card .content {
+    margin-top: 250px;
+    background-color: var(--white);
+    width: 100%;
+    padding: 20px;
+    color: var(--black);
+}
+
+.card .action {
+    margin-top: 250px;
+    width: 10%;
+    background-color: var(--primary-color);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+}
+
+.card .action a {
+    color: var(--white);
+}
+
+.card:hover img {
+    opacity: 1;
+}
+
+.card:hover .content {
+    background-color: var(--white);
+    width: 90%;
+    padding: 20px;
+    color: var(--black);
+}
+
+.card:hover .action {
+    display: flex;
+}
+
+ul.list {
+    list-style: none;
+    padding-left: 0;
+}
+
+ul.list li {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed var(--primary-color);
+}
+
+ul.list li a {
+    color: var(--primary-color);
+}
+
+footer {
+    background: var(--primary-color);
+    padding: 10px 25px;
+    color: var(--white);
+    text-align: center;
+}
+
+@media screen and (max-width: 950px) {
+    main {
+        flex-wrap: wrap;
+    }
+
+    main #content,
+    main aside {
+        width: 100%;
+    }
+
+    aside figure {
+        margin: 0 auto;
+        width: 400px;
+    }
+
+    aside figure img {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    header nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    header nav .logo {
+        text-align: center;
+    }
+
+    header nav .logo,
+    header nav ul {
+        width: 100%;
+    }
+
+    .card:hover {
+        flex-wrap: wrap;
+    }
+
+    .card:hover .content,
+    .card:hover .action {
+        width: 100%;
+    }
+
+    .card:hover .action {
+        margin-top: 0;
+    }
+}

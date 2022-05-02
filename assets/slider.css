@@ -1,0 +1,23 @@
+.jumbotron {
+    position: relative;
+}
+
+.jumbotron #slider-indicator {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.jumbotron .slider-indicator-item {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, .4);
+    margin-left: 5px;
+}
+
+.jumbotron .slider-indicator-item.active {
+    width: 20px;
+    background-color: var(--white);
+}
